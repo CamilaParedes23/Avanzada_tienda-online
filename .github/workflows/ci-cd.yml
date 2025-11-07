@@ -59,7 +59,7 @@ jobs:
       run: ./gradlew build -x test
 
     - name: Upload JAR artifact
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: tienda-ropa-jar
         path: build/libs/*.jar
@@ -93,7 +93,7 @@ jobs:
         npm run build
 
     - name: Upload build artifacts
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: react-build
         path: frontend/build/
@@ -116,13 +116,13 @@ jobs:
         password: ${{ secrets.DOCKER_PASSWORD }}
 
     - name: Download JAR artifact
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: tienda-ropa-jar
         path: build/libs/
 
     - name: Download React build
-      uses: actions/download-artifact@v3
+      uses: actions/download-artifact@v4
       with:
         name: react-build
         path: frontend/build/
