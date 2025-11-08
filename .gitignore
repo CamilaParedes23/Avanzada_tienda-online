@@ -58,7 +58,8 @@ frontend/yarn-debug.log*
 frontend/yarn-error.log*
 
 # Package-lock.json (opcional, depende de tu preferencia)
-frontend/package-lock.json
+- frontend/package-lock.json
++ # frontend/package-lock.json
 
 # Docker
 *.pid
