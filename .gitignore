@@ -78,3 +78,8 @@ frontend/package-lock.json
 # Application specific
 application-local.properties
 application-secret.properties
+.frontend_git_backup/
+frontend/.git
+.gradle/
+.idea/
+*.iml

@@ -67,6 +67,10 @@ jobs:
   test-frontend:
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: frontend
+
     steps:
     - uses: actions/checkout@v3
 
@@ -75,22 +79,16 @@ jobs:
       with:
         node-version: '18'
         cache: 'npm'
-        cache-dependency-path: frontend/package-lock.json
+        cache-dependency-path: package-lock.json
 
     - name: Install dependencies
-      run: |
-        cd frontend
-        npm ci
+      run: npm ci
 
     - name: Run tests
-      run: |
-        cd frontend
-        npm test -- --coverage --watchAll=false
+      run: npm test -- --coverage --watchAll=false
 
     - name: Build frontend
-      run: |
-        cd frontend
-        npm run build
+      run: npm run build
 
     - name: Upload build artifacts
       uses: actions/upload-artifact@v4
