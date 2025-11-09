@@ -3,57 +3,55 @@ import { Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 function ProductCard({ producto }) {
-  const { id, nombre, descripcion, precio, categoria, talla, color, stock, imagenUrl } = producto;
+    const { id, nombre, descripcion, precio, categoria, talla, color, stock, imagenUrl } = producto;
 
-  return (
-    <Card className="h-100 mb-4">
-      <Card.Img
-        variant="top"
-        src={imagenUrl || `https://via.placeholder.com/300x200?text=${nombre}`}
-        className="product-image"
-        alt={nombre}
-      />
-      <Card.Body className="d-flex flex-column">
-        <Card.Title>{nombre}</Card.Title>
-        <Card.Text className="text-muted small">
-          {descripcion || 'Sin descripción disponible'}
-        </Card.Text>
+    return (
+        <Card className="product-card">
+            <div className="image-container">
+                <Card.Img
+                    variant="top"
+                    src={imagenUrl || `https://via.placeholder.com/300x300?text=${nombre}`}
+                    alt={nombre}
+                    className="product-image"
+                />
+            </div>
 
-        <div className="mb-2">
-          <Badge bg="secondary" className="me-2">{categoria}</Badge>
-          <Badge bg="info" className="me-2">Talla {talla}</Badge>
-          <Badge bg="warning" text="dark">{color}</Badge>
-        </div>
+            <Card.Body className="d-flex flex-column">
+                <Card.Title className="fw-semibold">{nombre}</Card.Title>
+                <Card.Text className="text-muted small mb-2">
+                    {descripcion || 'Sin descripción disponible'}
+                </Card.Text>
 
-        <div className="d-flex justify-content-between align-items-center mb-2">
-          <span className="price-tag">${precio}</span>
-          <Badge
-            bg={stock > 0 ? 'success' : 'danger'}
-            className="stock-badge"
-          >
-            {stock > 0 ? `Stock: ${stock}` : 'Agotado'}
-          </Badge>
-        </div>
+                <div className="mb-2">
+                    <Badge bg="light" text="dark" className="me-1">{categoria}</Badge>
+                    <Badge bg="light" text="dark" className="me-1">Talla {talla}</Badge>
+                    <Badge bg="light" text="dark">{color}</Badge>
+                </div>
 
-        <div className="mt-auto">
-          <div className="d-grid gap-2">
-            <Link to={`/producto/${id}`}>
-              <Button variant="primary" className="w-100">
-                Ver Detalles
-              </Button>
-            </Link>
-            <Button
-              variant="success"
-              disabled={stock === 0}
-              className="w-100"
-            >
-              {stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}
-            </Button>
-          </div>
-        </div>
-      </Card.Body>
-    </Card>
-  );
+                <div className="d-flex justify-content-between align-items-center mt-auto">
+                    <span className="price-tag">${precio}</span>
+                    <Badge bg={stock > 0 ? 'success' : 'danger'}>
+                        {stock > 0 ? `Stock: ${stock}` : 'Agotado'}
+                    </Badge>
+                </div>
+
+                <div className="mt-3 d-grid gap-2">
+                    <Link to={`/producto/${id}`} className="text-decoration-none">
+                        <Button variant="dark" className="rounded-pill w-100">
+                            Ver Detalles
+                        </Button>
+                    </Link>
+                    <Button
+                        variant="outline-dark"
+                        disabled={stock === 0}
+                        className="rounded-pill w-100"
+                    >
+                        {stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}
+                    </Button>
+                </div>
+            </Card.Body>
+        </Card>
+    );
 }
 
 export default ProductCard;
