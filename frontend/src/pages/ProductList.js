@@ -1,17 +1,17 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { Container, Col, Form, Button, Card } from 'react-bootstrap';
-import { productoService } from '../services/api';
+import { productoService, categoriaService } from '../services/api';
 import ProductCard from '../components/ProductCard';
 import '../App.css';
 
 function ProductList() {
     const [productos, setProductos] = useState([]);
+    const [productosOriginales, setProductosOriginales] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [tallas, setTallas] = useState([]);
     const [colores, setColores] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Filtros
     const [busqueda, setBusqueda] = useState('');
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
     const [tallaSeleccionada, setTallaSeleccionada] = useState('');
@@ -20,61 +20,56 @@ function ProductList() {
     const cargarDatos = useCallback(async () => {
         try {
             setLoading(true);
-            const [
-                productosResponse,
-                categoriasResponse,
-                tallasResponse,
-                coloresResponse,
-            ] = await Promise.all([
+            const [productosResponse, categoriasResponse] = await Promise.all([
                 productoService.obtenerTodos(),
-                productoService.obtenerCategorias(),
-                productoService.obtenerTallas(),
-                productoService.obtenerColores(),
+                categoriaService.obtenerTodos(),
             ]);
 
-            setProductos(productosResponse?.data || []);
-            setCategorias(categoriasResponse?.data || []);
-            setTallas(tallasResponse?.data || []);
-            setColores(coloresResponse?.data || []);
+            const productosData = productosResponse?.data || [];
+            const categoriasData = categoriasResponse?.data || [];
+
+            setProductosOriginales(productosData);
+            setProductos(productosData);
+            setCategorias(categoriasData);
+
+            const tallasUnicas = [...new Set(productosData.map((p) => p.talla).filter(Boolean))];
+            const coloresUnicos = [...new Set(productosData.map((p) => p.color).filter(Boolean))];
+            setTallas(tallasUnicas);
+            setColores(coloresUnicos);
         } catch (error) {
             console.error('Error al cargar productos:', error);
-            setProductos([]);
         } finally {
             setLoading(false);
         }
     }, []);
 
-    const filtrarProductos = useCallback(async () => {
-        try {
-            let productosResponse;
+    const filtrarProductos = useCallback(() => {
+        let productosFiltrados = [...productosOriginales];
 
-            if (busqueda) {
-                productosResponse = await productoService.buscarPorNombre(busqueda);
-            } else if (categoriaSeleccionada) {
-                productosResponse = await productoService.buscarPorCategoria(categoriaSeleccionada);
-            } else {
-                productosResponse = await productoService.obtenerTodos();
-            }
-
-            let productosFiltrados = productosResponse?.data || [];
-
-            if (tallaSeleccionada) {
-                productosFiltrados = productosFiltrados.filter(
-                    (p) => p.talla === tallaSeleccionada
-                );
-            }
-
-            if (colorSeleccionado) {
-                productosFiltrados = productosFiltrados.filter(
-                    (p) => p.color === colorSeleccionado
-                );
-            }
-
-            setProductos(productosFiltrados);
-        } catch (error) {
-            console.error('Error al filtrar productos:', error);
+        if (busqueda) {
+            productosFiltrados = productosFiltrados.filter(
+                (p) =>
+                    p.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
+                    p.descripcion?.toLowerCase().includes(busqueda.toLowerCase())
+            );
         }
-    }, [busqueda, categoriaSeleccionada, tallaSeleccionada, colorSeleccionado]);
+
+        if (categoriaSeleccionada) {
+            productosFiltrados = productosFiltrados.filter(
+                (p) => p.categoriaNombre === categoriaSeleccionada
+            );
+        }
+
+        if (tallaSeleccionada) {
+            productosFiltrados = productosFiltrados.filter((p) => p.talla === tallaSeleccionada);
+        }
+
+        if (colorSeleccionado) {
+            productosFiltrados = productosFiltrados.filter((p) => p.color === colorSeleccionado);
+        }
+
+        setProductos(productosFiltrados);
+    }, [productosOriginales, busqueda, categoriaSeleccionada, tallaSeleccionada, colorSeleccionado]);
 
     useEffect(() => {
         cargarDatos();
@@ -93,33 +88,32 @@ function ProductList() {
 
     return (
         <Container fluid className="product-list-container py-5">
-            {/* ======= CATEGORÍAS ======= */}
+            {/* CATEGORÍAS */}
             {categorias.length > 0 && (
                 <div className="categories-section mb-5 text-center">
                     <h2 className="fw-bold mb-4">Categorías</h2>
                     <div className="d-flex flex-wrap justify-content-center gap-3">
                         {categorias.map((categoria) => (
                             <Button
-                                key={categoria}
+                                key={categoria.id}
                                 variant="outline-dark"
                                 className="rounded-pill px-4 py-2 category-btn"
-                                onClick={() => setCategoriaSeleccionada(categoria)}
+                                onClick={() => setCategoriaSeleccionada(categoria.nombre)}
                             >
-                                {categoria}
+                                {categoria.nombre}
                             </Button>
                         ))}
                     </div>
                 </div>
             )}
 
-            <div className="shop-layout">
-                {/* ====== SIDEBAR ====== */}
+            <div className="shop-layout d-flex flex-wrap gap-4">
+                {/* SIDEBAR */}
                 <Col xs={12} md={3} className="sidebar mb-4">
                     <Card className="filter-sidebar shadow-sm border-0 p-3">
                         <Card.Body>
                             <h5 className="fw-bold mb-4 text-center">Filtros</h5>
 
-                            {/* Buscar */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Buscar</Form.Label>
                                 <Form.Control
@@ -130,7 +124,21 @@ function ProductList() {
                                 />
                             </Form.Group>
 
-                            {/* Talla */}
+                            <Form.Group className="mb-3">
+                                <Form.Label>Categoría</Form.Label>
+                                <Form.Select
+                                    value={categoriaSeleccionada}
+                                    onChange={(e) => setCategoriaSeleccionada(e.target.value)}
+                                >
+                                    <option value="">Todas las categorías</option>
+                                    {categorias.map((categoria) => (
+                                        <option key={categoria.id} value={categoria.nombre}>
+                                            {categoria.nombre}
+                                        </option>
+                                    ))}
+                                </Form.Select>
+                            </Form.Group>
+
                             <Form.Group className="mb-3">
                                 <Form.Label>Talla</Form.Label>
                                 <Form.Select
@@ -146,7 +154,6 @@ function ProductList() {
                                 </Form.Select>
                             </Form.Group>
 
-                            {/* Color */}
                             <Form.Group className="mb-4">
                                 <Form.Label>Color</Form.Label>
                                 <Form.Select
@@ -173,8 +180,8 @@ function ProductList() {
                     </Card>
                 </Col>
 
-                {/* ====== PRODUCTOS ====== */}
-                <div className="products-area">
+                {/* PRODUCTOS */}
+                <div className="products-area flex-grow-1">
                     <h2 className="fw-bold mb-4 text-center text-md-start">
                         Productos ({productos.length})
                     </h2>
@@ -186,9 +193,9 @@ function ProductList() {
                             </div>
                         </div>
                     ) : productos.length > 0 ? (
-                        <div className="products-grid">
+                        <div className="products-grid d-flex flex-wrap justify-content-center gap-4">
                             {productos.map((producto) => (
-                                <div key={producto.id} className="product-cell">
+                                <div key={producto.id} className="product-cell" style={{ maxWidth: '350px' }}>
                                     <ProductCard producto={producto} />
                                 </div>
                             ))}

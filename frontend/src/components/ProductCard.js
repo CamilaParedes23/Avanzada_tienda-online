@@ -1,12 +1,23 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Card, Button, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useCart } from '../context/CartContext';
 
 function ProductCard({ producto }) {
-    const { id, nombre, descripcion, precio, categoria, talla, color, stock, imagenUrl } = producto;
+    const { id, nombre, descripcion, precio, categoriaNombre, talla, color, stock, imagenUrl } = producto;
+    const { addToCart } = useCart();
+    const [adding, setAdding] = useState(false);
+
+    const handleAdd = async () => {
+        if (stock > 0) {
+            setAdding(true);
+            addToCart(producto);
+            setTimeout(() => setAdding(false), 500);
+        }
+    };
 
     return (
-        <Card className="product-card">
+        <Card className="product-card h-100 shadow-sm border-0">
             <div className="image-container">
                 <Card.Img
                     variant="top"
@@ -23,19 +34,19 @@ function ProductCard({ producto }) {
                 </Card.Text>
 
                 <div className="mb-2">
-                    <Badge bg="light" text="dark" className="me-1">{categoria}</Badge>
+                    <Badge bg="light" text="dark" className="me-1">{categoriaNombre}</Badge>
                     <Badge bg="light" text="dark" className="me-1">Talla {talla}</Badge>
                     <Badge bg="light" text="dark">{color}</Badge>
                 </div>
 
-                <div className="d-flex justify-content-between align-items-center mt-auto">
-                    <span className="price-tag">${precio}</span>
+                <div className="d-flex justify-content-between align-items-center mt-auto mb-2">
+                    <span className="fw-bold">${precio}</span>
                     <Badge bg={stock > 0 ? 'success' : 'danger'}>
                         {stock > 0 ? `Stock: ${stock}` : 'Agotado'}
                     </Badge>
                 </div>
 
-                <div className="mt-3 d-grid gap-2">
+                <div className="mt-auto d-grid gap-2">
                     <Link to={`/producto/${id}`} className="text-decoration-none">
                         <Button variant="dark" className="rounded-pill w-100">
                             Ver Detalles
@@ -43,10 +54,11 @@ function ProductCard({ producto }) {
                     </Link>
                     <Button
                         variant="outline-dark"
-                        disabled={stock === 0}
+                        disabled={stock === 0 || adding}
                         className="rounded-pill w-100"
+                        onClick={handleAdd}
                     >
-                        {stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}
+                        {adding ? '✓ Agregado!' : stock > 0 ? 'Agregar al Carrito' : 'Sin Stock'}
                     </Button>
                 </div>
             </Card.Body>
