@@ -1,102 +1,76 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
+import { Container, Col, Form, Button, Card } from 'react-bootstrap';
 import { productoService, categoriaService } from '../services/api';
 import ProductCard from '../components/ProductCard';
+import '../App.css';
 
 function ProductList() {
     const [productos, setProductos] = useState([]);
+    const [productosOriginales, setProductosOriginales] = useState([]);
     const [categorias, setCategorias] = useState([]);
     const [tallas, setTallas] = useState([]);
     const [colores, setColores] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    // Filtros
     const [busqueda, setBusqueda] = useState('');
     const [categoriaSeleccionada, setCategoriaSeleccionada] = useState('');
     const [tallaSeleccionada, setTallaSeleccionada] = useState('');
     const [colorSeleccionado, setColorSeleccionado] = useState('');
 
-    // ✅ Se usa useCallback para que el efecto no genere advertencias
     const cargarDatos = useCallback(async () => {
         try {
             setLoading(true);
-            const [
-                productosResponse,
-                categoriasResponse
-            ] = await Promise.all([
+            const [productosResponse, categoriasResponse] = await Promise.all([
                 productoService.obtenerTodos(),
-                categoriaService.obtenerTodos()
+                categoriaService.obtenerTodos(),
             ]);
 
             const productosData = productosResponse?.data || [];
             const categoriasData = categoriasResponse?.data || [];
-            
+
             setProductosOriginales(productosData);
             setProductos(productosData);
-
-            // Usar objetos completos de categorías
             setCategorias(categoriasData);
 
-            // Extraer tallas y colores únicos de los productos
-            const tallasUnicas = [...new Set(productosData.map(p => p.talla).filter(Boolean))];
-            const coloresUnicos = [...new Set(productosData.map(p => p.color).filter(Boolean))];
-
+            const tallasUnicas = [...new Set(productosData.map((p) => p.talla).filter(Boolean))];
+            const coloresUnicos = [...new Set(productosData.map((p) => p.color).filter(Boolean))];
             setTallas(tallasUnicas);
             setColores(coloresUnicos);
         } catch (error) {
             console.error('Error al cargar productos:', error);
-            setProductos([]);
-            setCategorias([]);
-            setTallas([]);
-            setColores([]);
         } finally {
             setLoading(false);
         }
     }, []);
 
-    // Agregar estado para productos originales
-    const [productosOriginales, setProductosOriginales] = useState([]);
-
     const filtrarProductos = useCallback(() => {
-        try {
-            let productosFiltrados = [...productosOriginales];
+        let productosFiltrados = [...productosOriginales];
 
-            // Filtrar por búsqueda (nombre)
-            if (busqueda) {
-                productosFiltrados = productosFiltrados.filter(p =>
+        if (busqueda) {
+            productosFiltrados = productosFiltrados.filter(
+                (p) =>
                     p.nombre?.toLowerCase().includes(busqueda.toLowerCase()) ||
                     p.descripcion?.toLowerCase().includes(busqueda.toLowerCase())
-                );
-            }
-
-            // Filtrar por categoría
-            if (categoriaSeleccionada) {
-                productosFiltrados = productosFiltrados.filter(p =>
-                    p.categoriaNombre === categoriaSeleccionada
-                );
-            }
-
-            // Filtrar por talla
-            if (tallaSeleccionada) {
-                productosFiltrados = productosFiltrados.filter(p =>
-                    p.talla === tallaSeleccionada
-                );
-            }
-
-            // Filtrar por color
-            if (colorSeleccionado) {
-                productosFiltrados = productosFiltrados.filter(p =>
-                    p.color === colorSeleccionado
-                );
-            }
-
-            setProductos(productosFiltrados);
-        } catch (error) {
-            console.error('Error al filtrar productos:', error);
+            );
         }
+
+        if (categoriaSeleccionada) {
+            productosFiltrados = productosFiltrados.filter(
+                (p) => p.categoriaNombre === categoriaSeleccionada
+            );
+        }
+
+        if (tallaSeleccionada) {
+            productosFiltrados = productosFiltrados.filter((p) => p.talla === tallaSeleccionada);
+        }
+
+        if (colorSeleccionado) {
+            productosFiltrados = productosFiltrados.filter((p) => p.color === colorSeleccionado);
+        }
+
+        setProductos(productosFiltrados);
     }, [productosOriginales, busqueda, categoriaSeleccionada, tallaSeleccionada, colorSeleccionado]);
 
-    // ✅ Se llaman los efectos con dependencias estables
     useEffect(() => {
         cargarDatos();
     }, [cargarDatos]);
@@ -113,14 +87,33 @@ function ProductList() {
     };
 
     return (
-        <Container>
-            <Row>
-                <Col md={3}>
-                    <Card className="filter-sidebar mb-4">
-                        <Card.Body>
-                            <h5>Filtros</h5>
+        <Container fluid className="product-list-container py-5">
+            {/* CATEGORÍAS */}
+            {categorias.length > 0 && (
+                <div className="categories-section mb-5 text-center">
+                    <h2 className="fw-bold mb-4">Categorías</h2>
+                    <div className="d-flex flex-wrap justify-content-center gap-3">
+                        {categorias.map((categoria) => (
+                            <Button
+                                key={categoria.id}
+                                variant="outline-dark"
+                                className="rounded-pill px-4 py-2 category-btn"
+                                onClick={() => setCategoriaSeleccionada(categoria.nombre)}
+                            >
+                                {categoria.nombre}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            )}
 
-                            {/* Búsqueda */}
+            <div className="shop-layout d-flex flex-wrap gap-4">
+                {/* SIDEBAR */}
+                <Col xs={12} md={3} className="sidebar mb-4">
+                    <Card className="filter-sidebar shadow-sm border-0 p-3">
+                        <Card.Body>
+                            <h5 className="fw-bold mb-4 text-center">Filtros</h5>
+
                             <Form.Group className="mb-3">
                                 <Form.Label>Buscar</Form.Label>
                                 <Form.Control
@@ -131,7 +124,6 @@ function ProductList() {
                                 />
                             </Form.Group>
 
-                            {/* Categoría */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Categoría</Form.Label>
                                 <Form.Select
@@ -147,7 +139,6 @@ function ProductList() {
                                 </Form.Select>
                             </Form.Group>
 
-                            {/* Talla */}
                             <Form.Group className="mb-3">
                                 <Form.Label>Talla</Form.Label>
                                 <Form.Select
@@ -163,8 +154,7 @@ function ProductList() {
                                 </Form.Select>
                             </Form.Group>
 
-                            {/* Color */}
-                            <Form.Group className="mb-3">
+                            <Form.Group className="mb-4">
                                 <Form.Label>Color</Form.Label>
                                 <Form.Select
                                     value={colorSeleccionado}
@@ -180,9 +170,9 @@ function ProductList() {
                             </Form.Group>
 
                             <Button
-                                variant="outline-secondary"
+                                variant="dark"
                                 onClick={limpiarFiltros}
-                                className="w-100"
+                                className="w-100 rounded-pill"
                             >
                                 Limpiar Filtros
                             </Button>
@@ -190,34 +180,33 @@ function ProductList() {
                     </Card>
                 </Col>
 
-                <Col md={9}>
-                    <div className="d-flex justify-content-between align-items-center mb-4">
-                        <h2>Productos ({productos.length})</h2>
-                    </div>
+                {/* PRODUCTOS */}
+                <div className="products-area flex-grow-1">
+                    <h2 className="fw-bold mb-4 text-center text-md-start">
+                        Productos ({productos.length})
+                    </h2>
 
                     {loading ? (
-                        <div className="text-center">
-                            <div className="spinner-border text-primary" role="status">
+                        <div className="text-center py-5">
+                            <div className="spinner-border text-dark" role="status">
                                 <span className="visually-hidden">Cargando...</span>
                             </div>
                         </div>
                     ) : productos.length > 0 ? (
-                        <Row>
+                        <div className="products-grid d-flex flex-wrap justify-content-center gap-4">
                             {productos.map((producto) => (
-                                <Col lg={4} md={6} key={producto.id}>
+                                <div key={producto.id} className="product-cell" style={{ maxWidth: '350px' }}>
                                     <ProductCard producto={producto} />
-                                </Col>
+                                </div>
                             ))}
-                        </Row>
+                        </div>
                     ) : (
-                        <div className="text-center">
-                            <p className="text-muted">
-                                No se encontraron productos con los filtros seleccionados.
-                            </p>
+                        <div className="text-center text-muted mt-4">
+                            <p>No se encontraron productos con los filtros seleccionados.</p>
                         </div>
                     )}
-                </Col>
-            </Row>
+                </div>
+            </div>
         </Container>
     );
 }
