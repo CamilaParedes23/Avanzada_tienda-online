@@ -32,7 +32,13 @@ function AdminPanel() {
                 categoriaService.obtenerTodos()
             ]);
             setProductos(productosResponse?.data || []);
-            setCategorias(categoriasResponse?.data || []);
+
+            // ✅ Eliminar categorías duplicadas por nombre
+            const categoriasList = categoriasResponse?.data || [];
+            const categoriasUnicas = Array.from(
+                new Map(categoriasList.map((cat) => [cat.nombre, cat])).values()
+            );
+            setCategorias(categoriasUnicas);
         } catch (error) {
             console.error('Error al cargar datos:', error);
             mostrarAlerta('Error al cargar datos', 'danger');
@@ -163,6 +169,24 @@ function AdminPanel() {
                         <Alert variant={alert.variant} className="mb-4">
                             {alert.message}
                         </Alert>
+                    )}
+
+                    {/* CATEGORÍAS */}
+                    {categorias.length > 0 && (
+                        <div className="categories-section mb-4 text-center">
+                            <h4 className="fw-bold mb-3">Categorías</h4>
+                            <div className="d-flex flex-wrap justify-content-center gap-3">
+                                {categorias.map((categoria) => (
+                                    <Button
+                                        key={categoria.id}
+                                        variant="outline-dark"
+                                        className="rounded-pill px-4 py-2"
+                                    >
+                                        {categoria.nombre}
+                                    </Button>
+                                ))}
+                            </div>
+                        </div>
                     )}
 
                     <Card>
