@@ -1,38 +1,164 @@
+/* ====== CARRITO MEJORADO ====== */
 .empty-cart-icon {
-  font-size: 100px;
-  opacity: 0.3;
+  font-size: 120px;
+  opacity: 0.4;
+  filter: grayscale(0.3);
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
 }
 
 .cart-product-img {
-  width: 80px;
-  height: 80px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
-  border-radius: 8px;
+  border-radius: 12px;
+  border: 2px solid #f1f1f1;
+  transition: all 0.3s ease;
+}
+
+.cart-product-img:hover {
+  transform: scale(1.05);
+  border-color: #c9a227;
 }
 
 .quantity-controls {
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: 0.5rem;
+  background-color: #f8f9fa;
+  border-radius: 25px;
+  padding: 0.25rem;
 }
 
 .quantity-controls button {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.quantity-controls button:hover {
+  transform: scale(1.1);
+}
+
+.quantity-controls span {
+  min-width: 40px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 .cart-summary {
-  border-top: 2px solid #dee2e6;
-  padding-top: 20px;
+  border-top: 2px solid #eaeaea;
+  padding-top: 2rem;
+  margin-top: 2rem;
 }
 
 .summary-card {
-  background-color: #f8f9fa;
-  border: 2px solid #dee2e6;
+  background: linear-gradient(135deg, #fafafa 0%, #f0f0f0 100%);
+  border: 2px solid #e1e1e1;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.summary-card .card-body {
+  padding: 2rem;
+}
+
+/* Tabla del carrito mejorada */
+.table {
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
+
+.table thead th {
+  background-color: #111;
+  color: white;
+  font-weight: 600;
+  padding: 1rem;
+  border: none;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.table tbody tr:hover {
+  background-color: rgba(201, 162, 39, 0.05);
+  transform: scale(1.005);
+}
+
+.table tbody td {
+  padding: 1.5rem 1rem;
+  vertical-align: middle;
+  border-color: #f1f1f1;
+}
+
+/* Botones mejorados */
+.btn {
+  border-radius: 25px;
+  font-weight: 500;
+  padding: 0.6rem 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #c9a227 0%, #d4af3c 100%);
+  border: none;
+  color: white;
+  font-weight: 600;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+}
+
+.btn-success:hover {
+  background: linear-gradient(135deg, #b39121 0%, #c9a227 100%);
+  box-shadow: 0 8px 25px rgba(201, 162, 39, 0.3);
+}
+
+.btn-danger {
+  background-color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-danger {
+  color: #dc3545;
+  border-color: #dc3545;
+}
+
+.btn-outline-primary {
+  color: #c9a227;
+  border-color: #c9a227;
+}
+
+.btn-outline-primary:hover {
+  background-color: #c9a227;
+  border-color: #c9a227;
+  color: white;
 }
 
 .summary-card h5 {
