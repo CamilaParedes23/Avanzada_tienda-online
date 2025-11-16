@@ -24,24 +24,16 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    // Seguridad con Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-
-    // JWT
-    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
-    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
-
-    // TESTING ✔️
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'com.h2database:h2'
+    // 🔐 Seguridad con JWT (Spring Boot 3)
+    implementation 'org.springframework.boot:spring-boot-starter-security'
 
-    // Mockito (para evitar error en @MockBean) ✔️
-    testImplementation 'org.mockito:mockito-core:5.10.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:5.10.0'
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
+// 📦 JWT para generar tokens
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
 }
 
