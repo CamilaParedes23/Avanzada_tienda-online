@@ -17,9 +17,39 @@ CREATE DATABASE tienda_ropa CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
 #### Opción B: Cargar datos iniciales (categorías y productos)
+
 ```bash
 mysql -u root -p tienda_ropa < init_database.sql
 ```
+
+#### ¿Dónde ejecuto ese comando y en qué ruta?
+
+- 1) Asegúrate de que el servicio de MySQL esté ejecutándose (por ejemplo, inicia MySQL desde XAMPP).
+- 2) Abre una terminal:
+  - Símbolo del sistema (cmd) o PowerShell en Windows, o Git Bash.
+- 3) Sitúate en la carpeta que contiene init_database.sql. Por ejemplo, si estás en este proyecto:
+  ```
+  cd "c:\Elian\Espe\8vo_Semestre\PrograAvanzada\Parcial1\Proyecto\tienda_ropa"
+  ```
+- 4) Ejecuta el comando:
+  - En cmd / Git Bash:
+    ```
+    mysql -u root -p tienda_ropa < init_database.sql
+    ```
+    Introduce la contraseña de root si te la pide.
+  - Si mysql no está en el PATH (común en Windows + XAMPP), usa la ruta completa:
+    ```
+    "C:\xampp\mysql\bin\mysql.exe" -u root -p tienda_ropa < init_database.sql
+    ```
+  - En PowerShell, si el operador `<` da problemas, usa:
+    ```
+    cmd /c "mysql -u root -p tienda_ropa < init_database.sql"
+    ```
+    o
+    ```
+    Get-Content .\init_database.sql | "C:\xampp\mysql\bin\mysql.exe" -u root -p tienda_ropa
+    ```
+- 5) Alternativa si prefieres interfaz gráfica: abre http://localhost/phpmyadmin → selecciona la base tienda_ropa → Importar → sube init_database.sql
 
 ### 3️⃣ Iniciar el Backend
 
