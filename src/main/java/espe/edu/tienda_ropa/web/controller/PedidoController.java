@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
 @RestController
 @RequestMapping("/api/v2/pedidos")
 public class PedidoController {
@@ -38,5 +37,15 @@ public class PedidoController {
     @PatchMapping("/{id}/cancel")
     public ResponseEntity<PedidoResponse> cancel(@PathVariable Long id) {
         return ResponseEntity.ok(pedidoService.cancel(id));
+    }
+
+    @PatchMapping("/{id}/confirm")
+    public ResponseEntity<PedidoResponse> confirm(@PathVariable Long id) {
+        return ResponseEntity.ok(pedidoService.confirm(id));
+    }
+
+    @PatchMapping("/{id}/complete-payment")
+    public ResponseEntity<PedidoResponse> completePago(@PathVariable Long id) {
+        return ResponseEntity.ok(pedidoService.completePago(id));
     }
 }

@@ -11,6 +11,7 @@ import ProductDetail from "./pages/ProductDetail";
 import Cart from "./pages/Cart";
 import Login from "./pages/Login";
 import AdminPanel from "./pages/AdminPanel";
+import ConfirmacionPedido from "./pages/ConfirmacionPedido";
 
 import { AuthProvider } from "./context/AuthContext";
 import { CartProvider } from "./context/CartContext";
@@ -31,6 +32,7 @@ const Layout = () => {
                     <Route path="/carrito" element={<Cart />} />
                     <Route path="/login" element={<Login />} />
                     <Route path="/admin" element={<AdminPanel />} />
+                    <Route path="/confirmacion-pedido/:id" element={<ConfirmacionPedido />} />
                 </Routes>
             </main>
             {!isAdminPage && <Footer />}

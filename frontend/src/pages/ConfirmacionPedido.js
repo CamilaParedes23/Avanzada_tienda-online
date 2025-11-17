@@ -58,6 +58,23 @@ function ConfirmacionPedido() {
                     <p><strong>📦 Número de pedido:</strong> {pedidoIdFormateado}</p>
                     <p><strong>📅 Fecha:</strong> {fecha}</p>
                     <p><strong>💲 Total:</strong> ${pedido.total}</p>
+                    <p><strong>✅ Estado:</strong>
+                        <span className={`badge ms-2 ${
+                            pedido.estado === 'COMPLETADO' ? 'bg-success' :
+                            pedido.estado === 'PENDIENTE' ? 'bg-warning' :
+                            pedido.estado === 'CONFIRMADO' ? 'bg-info' :
+                            pedido.estado === 'CANCELADO' ? 'bg-danger' : 'bg-secondary'
+                        }`}>
+                            {pedido.estado === 'COMPLETADO' ? '✅ COMPLETADO' :
+                             pedido.estado === 'PENDIENTE' ? '⏳ PENDIENTE' :
+                             pedido.estado === 'CONFIRMADO' ? '✔️ CONFIRMADO' :
+                             pedido.estado === 'CANCELADO' ? '❌ CANCELADO' :
+                             pedido.estado}
+                        </span>
+                    </p>
+                    {pedido.direccionEnvio && (
+                        <p><strong>📍 Dirección de envío:</strong> {pedido.direccionEnvio}</p>
+                    )}
                 </div>
 
                 <div className="text-center mt-4">

@@ -5,49 +5,47 @@ import java.math.BigDecimal;
 
 public class DetallePedidoRequestData {
 
-    @NotNull
     private Long pedidoId;
-
     @NotNull
     private Long productoId;
 
     @NotNull
-    @Min(value = 1)
+    @Min(1)
     private Integer cantidad;
 
     @NotNull
     @DecimalMin(value = "0.0", inclusive = false)
     private BigDecimal precioUnitario;
 
-    public @NotNull Long getPedidoId() {
+    public Long getPedidoId() {
         return pedidoId;
     }
 
-    public void setPedidoId(@NotNull Long pedidoId) {
+    public void setPedidoId(Long pedidoId) {
         this.pedidoId = pedidoId;
     }
 
-    public @NotNull Long getProductoId() {
+    public Long getProductoId() {
         return productoId;
     }
 
-    public void setProductoId(@NotNull Long productoId) {
+    public void setProductoId(Long productoId) {
         this.productoId = productoId;
     }
 
-    public @NotNull @Min(value = 1) Integer getCantidad() {
+    public Integer getCantidad() {
         return cantidad;
     }
 
-    public void setCantidad(@NotNull @Min(value = 1) Integer cantidad) {
+    public void setCantidad(Integer cantidad) {
         this.cantidad = cantidad;
     }
 
-    public @NotNull @DecimalMin(value = "0.0", inclusive = false) BigDecimal getPrecioUnitario() {
+    public BigDecimal getPrecioUnitario() {
         return precioUnitario;
     }
 
-    public void setPrecioUnitario(@NotNull @DecimalMin(value = "0.0", inclusive = false) BigDecimal precioUnitario) {
+    public void setPrecioUnitario(BigDecimal precioUnitario) {
         this.precioUnitario = precioUnitario;
     }
 }

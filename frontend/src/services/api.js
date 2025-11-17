@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_BASE_URL = '/api';  // Usar proxy en lugar de URL absoluta
+const API_BASE_URL = 'http://localhost:8080/api';  // Usar proxy en lugar de URL absoluta
 
 const api = axios.create({
   baseURL: API_BASE_URL,
@@ -75,6 +75,12 @@ export const pedidoService = {
 
   // Cancelar pedido
   cancelar: (id) => api.patch(`/v2/pedidos/${id}/cancel`),
+
+  // Confirmar pedido
+  confirmar: (id) => api.patch(`/v2/pedidos/${id}/confirm`),
+
+  // Completar pago del pedido
+  completarPago: (id) => api.patch(`/v2/pedidos/${id}/complete-payment`),
 };
 
 export const detallePedidoService = {

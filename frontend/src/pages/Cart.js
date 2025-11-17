@@ -13,9 +13,15 @@ const Cart = () => {
 
     const [alertMsg, setAlertMsg] = useState(null);
     const [pagoExitoso, setPagoExitoso] = useState(false);
+    const [direccionEnvio, setDireccionEnvio] = useState("");
 
     // Función para procesar pago
     const handleCheckout = async () => {
+        if (!direccionEnvio.trim()) {
+            setAlertMsg({ text: "Por favor, ingrese una dirección de envío.", variant: "warning" });
+            return;
+        }
+
         try {
             const itemsForBackend = items.map(item => ({
                 productoId: item.id,
@@ -26,19 +32,24 @@ const Cart = () => {
             const pedido = {
                 clienteId: user.userId,
                 total: parseFloat((getTotal() * 1.12).toFixed(2)),
-                direccionEnvio: "Dirección pendiente",
+                direccionEnvio: direccionEnvio,
                 observaciones: "",
                 items: itemsForBackend
             };
 
+            // 1. Crear el pedido (quedará en estado PENDIENTE)
             const response = await pedidoService.crear(pedido);
+            const nuevoPedidoId = response.data.id;
+
+            // 2. Completar el pago (cambiar estado a COMPLETADO)
+            await pedidoService.completarPago(nuevoPedidoId);
 
             clearCart();
             setPagoExitoso(true); // mostrar mensaje de pago exitoso
 
             // Redirigir después de 2.5 segundos
             setTimeout(() => {
-                navigate(`/confirmacion/${response.data.id}`);
+                navigate(`/confirmacion-pedido/${nuevoPedidoId}`);
             }, 2500);
 
         } catch (error) {
@@ -104,7 +115,9 @@ const Cart = () => {
 
             {pagoExitoso && (
                 <Alert variant="success" className="text-center">
-                    Pago realizado con éxito. ¡Gracias por su compra!
+                    <h5>✅ ¡Pago completado exitosamente!</h5>
+                    <p>Su pedido ha sido procesado y está en estado <strong>COMPLETADO</strong>.
+                    Gracias por su compra, será redirigido a la página de confirmación...</p>
                 </Alert>
             )}
 
@@ -208,16 +221,26 @@ const Cart = () => {
                                                     <span>Subtotal:</span>
                                                     <strong>${getTotal().toFixed(2)}</strong>
                                                 </div>
-                                                <div className="d-flex justify-content-between mb-2">
-                                                    <span>IVA (12%):</span>
-                                                    <strong>${(getTotal() * 0.12).toFixed(2)}</strong>
-                                                </div>
-                                                <hr />
-                                                <div className="d-flex justify-content-between mb-3">
-                                                    <h5>Total:</h5>
-                                                    <h5 className="text-primary">
-                                                        ${(getTotal() * 1.12).toFixed(2)}
-                                                    </h5>
+                                                                                                 <div className="d-flex justify-content-between mb-2">
+                                                                                                     <span>IVA (12%):</span>
+                                                                                                     <strong>${(getTotal() * 0.12).toFixed(2)}</strong>
+                                                                                                 </div>
+                                                                                                 <hr />
+                                                                                                 <div className="mb-3">
+                                                                                                     <label htmlFor="direccion" className="form-label">Dirección de Envío</label>
+                                                                                                     <input
+                                                                                                         type="text"
+                                                                                                         className="form-control"
+                                                                                                         id="direccion"
+                                                                                                         value={direccionEnvio}
+                                                                                                         onChange={(e) => setDireccionEnvio(e.target.value)}
+                                                                                                         placeholder="Ingrese su dirección"
+                                                                                                     />
+                                                                                                 </div>
+                                                                                                 <div className="d-flex justify-content-between mb-3">
+                                                                                                     <h5>Total:</h5>
+                                                                                                     <h5 className="text-primary">
+                                                                                                         ${(getTotal() * 1.12).toFixed(2)}                                                    </h5>
                                                 </div>
                                                 <Button
                                                     variant="success"

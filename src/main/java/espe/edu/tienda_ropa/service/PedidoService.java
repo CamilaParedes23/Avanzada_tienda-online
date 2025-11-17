@@ -18,4 +18,10 @@ public interface PedidoService {
 
     //Cambiar estado del pedido (cancelar)
     PedidoResponse cancel(Long id);
+
+    //Confirmación del pedido
+    PedidoResponse confirm(Long id);
+
+    //Completar pago del pedido
+    PedidoResponse completePago(Long id);
 }

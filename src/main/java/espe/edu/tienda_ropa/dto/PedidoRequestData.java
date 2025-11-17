@@ -19,6 +19,8 @@ public class PedidoRequestData {
     @Size(max = 200)
     private String direccionEnvio;
 
+    private String estado;
+
     // 🔥 NUEVO CAMPO
     @NotNull
     private List<DetallePedidoRequestData> items;
@@ -34,6 +36,9 @@ public class PedidoRequestData {
 
     public String getDireccionEnvio() { return direccionEnvio; }
     public void setDireccionEnvio(String direccionEnvio) { this.direccionEnvio = direccionEnvio; }
+
+    public String getEstado() { return estado; }
+    public void setEstado(String estado) { this.estado = estado; }
 
     public List<DetallePedidoRequestData> getItems() { return items; }
     public void setItems(List<DetallePedidoRequestData> items) { this.items = items; }

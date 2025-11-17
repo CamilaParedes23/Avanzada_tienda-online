@@ -80,8 +80,7 @@ class PedidoServiceImplTest {
     void testGetById_NotFound() {
         when(repo.findById(99L)).thenReturn(Optional.empty());
 
-        NotFoundException ex =
-                assertThrows(NotFoundException.class, () -> service.getById(99L));
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> service.getById(99L));
 
         assertEquals("Pedido no encontrado", ex.getMessage());
     }
@@ -121,8 +120,7 @@ class PedidoServiceImplTest {
     void testCancelPedido_NotFound() {
         when(repo.findById(100L)).thenReturn(Optional.empty());
 
-        NotFoundException ex =
-                assertThrows(NotFoundException.class, () -> service.cancel(100L));
+        NotFoundException ex = assertThrows(NotFoundException.class, () -> service.cancel(100L));
 
         assertEquals("Pedido no encontrado", ex.getMessage());
     }
