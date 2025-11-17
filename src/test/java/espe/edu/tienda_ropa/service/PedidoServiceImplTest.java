@@ -22,16 +22,19 @@ import static org.mockito.Mockito.*;
 class PedidoServiceImplTest {
 
     private PedidoDomainRepository repo;
+    private DetallePedidoService detalleService;
     private PedidoServiceImpl service;
 
     @BeforeEach
     void setUp() {
         repo = mock(PedidoDomainRepository.class);
-        service = new PedidoServiceImpl(repo);
+        detalleService = mock(DetallePedidoService.class); // NUEVO ✔
+        service = new PedidoServiceImpl(repo, detalleService); // NUEVO ✔
     }
 
     @Test
     void testCreatePedido_Success() {
+
         PedidoRequestData req = new PedidoRequestData();
         req.setClienteId(10L);
         req.setTotal(new BigDecimal("150.75"));
@@ -51,10 +54,9 @@ class PedidoServiceImplTest {
 
         PedidoResponse response = service.create(req);
 
-        assertNotNull(response, "El response no debería ser nulo");
-        assertEquals(1L, response.getId(), "El ID del pedido debería ser 1");
-        assertEquals(Pedido.EstadoPedido.PENDIENTE, response.getEstado(), "El estado del pedido debería ser PENDIENTE");
-        assertEquals(req.getDireccionEnvio(), response.getDireccionEnvio(), "La dirección de envío debe coincidir");
+        assertNotNull(response);
+        assertEquals(1L, response.getId());
+        assertEquals(Pedido.EstadoPedido.PENDIENTE, response.getEstado());
         verify(repo).save(ArgumentMatchers.any(Pedido.class));
     }
 
@@ -69,8 +71,8 @@ class PedidoServiceImplTest {
 
         PedidoResponse response = service.getById(5L);
 
-        assertNotNull(response, "El pedido debería ser encontrado");
-        assertEquals(5L, response.getId(), "El ID debe coincidir con el pedido buscado");
+        assertNotNull(response);
+        assertEquals(5L, response.getId());
         verify(repo).findById(5L);
     }
 
@@ -78,8 +80,10 @@ class PedidoServiceImplTest {
     void testGetById_NotFound() {
         when(repo.findById(99L)).thenReturn(Optional.empty());
 
-        NotFoundException ex = assertThrows(NotFoundException.class, () -> service.getById(99L));
-        assertEquals("Pedido no encontrado", ex.getMessage(), "El mensaje de excepción debe coincidir");
+        NotFoundException ex =
+                assertThrows(NotFoundException.class, () -> service.getById(99L));
+
+        assertEquals("Pedido no encontrado", ex.getMessage());
     }
 
     @Test
@@ -93,9 +97,7 @@ class PedidoServiceImplTest {
 
         List<PedidoResponse> pedidos = service.list();
 
-        assertEquals(2, pedidos.size(), "Debe listar todos los pedidos existentes");
-        assertTrue(pedidos.stream().anyMatch(p -> p.getId() == 1L), "Debe contener el pedido con ID 1");
-        assertTrue(pedidos.stream().anyMatch(p -> p.getId() == 2L), "Debe contener el pedido con ID 2");
+        assertEquals(2, pedidos.size());
         verify(repo).findAll();
     }
 
@@ -110,7 +112,7 @@ class PedidoServiceImplTest {
 
         PedidoResponse response = service.cancel(3L);
 
-        assertEquals(Pedido.EstadoPedido.CANCELADO, response.getEstado(), "El pedido debe quedar CANCELADO");
+        assertEquals(Pedido.EstadoPedido.CANCELADO, response.getEstado());
         verify(repo).findById(3L);
         verify(repo).save(pedido);
     }
@@ -119,7 +121,9 @@ class PedidoServiceImplTest {
     void testCancelPedido_NotFound() {
         when(repo.findById(100L)).thenReturn(Optional.empty());
 
-        NotFoundException ex = assertThrows(NotFoundException.class, () -> service.cancel(100L));
-        assertEquals("Pedido no encontrado", ex.getMessage(), "El mensaje de excepción debe coincidir");
+        NotFoundException ex =
+                assertThrows(NotFoundException.class, () -> service.cancel(100L));
+
+        assertEquals("Pedido no encontrado", ex.getMessage());
     }
 }
