@@ -22,28 +22,33 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'com.h2database:h2'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // 🔥 Driver PostgreSQL (NECESARIO PARA EL DEPLOY)
+    implementation 'org.postgresql:postgresql:42.7.3'
+
+    // MySQL para local con XAMPP
     runtimeOnly 'com.mysql:mysql-connector-j'
 
-    // Seguridad con Spring Security
-    implementation 'org.springframework.boot:spring-boot-starter-security'
+    // Base de datos en memoria (solo desarrollo/test)
+    implementation 'com.h2database:h2'
 
     // JWT
     implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-impl:0.11.5'
     runtimeOnly 'io.jsonwebtoken:jjwt-jackson:0.11.5'
 
-    // TESTING ✔️
+    // DevTools
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    // TESTING
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     testRuntimeOnly 'com.h2database:h2'
 
-    // Mockito (para evitar error en @MockBean) ✔️
+    // Mockito
     testImplementation 'org.mockito:mockito-core:5.10.0'
     testImplementation 'org.mockito:mockito-junit-jupiter:5.10.0'
-    testImplementation("org.springframework.boot:spring-boot-starter-test")
-
 }
 
 tasks.named('test') {
