@@ -20,7 +20,7 @@
     --border-radius-lg: 20px;
 }
 
-*{  
+*{
     font-family: 'Poppins', sans-serif !important;
     box-sizing: border-box;
 }
@@ -36,8 +36,6 @@ body {
 }
 
 .App {
-    display: flex;
-    flex-direction: column;
     min-height: 100vh;
 }
 
@@ -302,7 +300,6 @@ h6 { font-size: 1rem; }
     padding: 0.5rem 1rem !important;
     border-radius: var(--border-radius);
     transition: var(--transition);
-    position: relative;
 }
 
 .nav-link:hover {
@@ -434,13 +431,12 @@ h6 { font-size: 1rem; }
 
 /* Solo estilos del formulario que está dentro del Admin si algún día quieres */
 .admin-panel-form {
-    background-color: var(--light-gray);
+    background-color: var(--white);
     padding: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-    margin: 0 auto 2rem auto;
-    max-width: 700px;
+    border-radius: var(--border-radius-lg);
+    box-shadow: var(--shadow-medium);
 }
+
 
 
 
@@ -472,12 +468,11 @@ form button {
 /* ===== FOOTER MEJORADO ===== */
 .footer {
     background: linear-gradient(135deg, var(--black) 0%, #1a1a1a 100%);
-    color: #f2f2f2;
-    padding: 3rem 0 2rem;
-    margin-top: auto;
-    position: relative;
-    overflow: hidden;
+    width: 100%;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
 }
+
 
 .footer::before {
     content: '';
@@ -567,11 +562,11 @@ form button {
     .navbar form {
         margin-left: 1rem;
     }
-    
+
     .navbar input[type="search"] {
         width: 200px;
     }
-    
+
     h1 { font-size: 2.2rem; }
     h2 { font-size: 1.8rem; }
 }
@@ -581,7 +576,7 @@ form button {
         margin: 0.5rem 0 0 0;
         width: 100%;
     }
-    
+
     .navbar input[type="search"] {
         width: 100%;
     }
@@ -596,24 +591,24 @@ form button {
         gap: 0.5rem;
         margin-top: 1rem;
     }
-    
+
     .hero-section {
         padding: 2rem 1rem;
     }
-    
+
     .hero-section h1 {
         font-size: 2rem;
     }
-    
+
     .categories-grid {
         grid-template-columns: 1fr;
         gap: 1rem;
     }
-    
+
     .category-card {
         max-width: 100%;
     }
-    
+
     h1 { font-size: 1.8rem; }
     h2 { font-size: 1.5rem; }
     h3 { font-size: 1.3rem; }
@@ -625,12 +620,12 @@ form button {
         margin: 0.5rem auto;
         width: 200px;
     }
-    
+
     .products-grid {
         grid-template-columns: 1fr;
         gap: 1.5rem;
     }
-    
+
     .product-card {
         max-width: 100%;
     }
@@ -915,7 +910,7 @@ form button {
 }
 @media (max-width: 768px) {
     .product-card .card-img-top { height: 280px; }
-    .products-grid { 
+    .products-grid {
         gap: 1rem;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     }
@@ -1123,15 +1118,3 @@ form button {
         gap: 16px;
     }
 }
-
-/* ====== FIX: EVITAR QUE EL FORM GLOBAL ROMPA EL MODAL ====== */
-.admin-modal-form {
-    background: none !important;
-    padding: 0 !important;
-    margin: 0 !important;
-    max-width: 100% !important;
-    box-shadow: none !important;
-}
-
-
-

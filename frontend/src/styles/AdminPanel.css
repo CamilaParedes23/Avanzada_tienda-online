@@ -1,0 +1,88 @@
+.admin-panel-container {
+    padding-top: 40px !important;
+    padding-bottom: 60px !important;
+}
+
+.admin-header {
+    background-color: #f8f9fa;
+}
+
+.admin-panel-form .form-control,
+.admin-panel-form .form-select {
+    border-radius: 10px;
+    padding: 10px;
+}
+
+.admin-panel-form label {
+    font-weight: 500;
+}
+
+.admin-panel-form input[type="number"] {
+    -moz-appearance: textfield;
+}
+
+.admin-panel-form input::-webkit-outer-spin-button,
+.admin-panel-form input::-webkit-inner-spin-button {
+    display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 992px) {
+    .admin-panel-container h2 {
+        font-size: 1.75rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .admin-panel-container {
+        padding-top: 20px !important;
+        padding-bottom: 40px !important;
+    }
+
+    .admin-header {
+        text-align: center;
+        padding: 1.5rem !important;
+    }
+    
+    .admin-header h4 {
+        font-size: 1.25rem;
+    }
+
+    .admin-panel-container .d-flex.justify-content-between {
+        flex-direction: column;
+        align-items: stretch !important;
+    }
+
+    .admin-panel-container .d-flex.justify-content-between h2 {
+        text-align: center;
+        margin-bottom: 1.5rem;
+    }
+
+    .admin-panel-form .d-flex.justify-content-end {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .admin-panel-form .d-flex.justify-content-end .btn {
+        width: 100%;
+    }
+    
+    .table-responsive {
+        border: 1px solid #dee2e6;
+        border-radius: .25rem;
+    }
+    
+    .table th, .table td {
+        white-space: nowrap;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-panel-container h2 {
+        font-size: 1.5rem;
+    }
+
+    .admin-panel-form {
+        padding: 1rem;
+    }
+}

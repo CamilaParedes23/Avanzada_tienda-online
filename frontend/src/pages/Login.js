@@ -51,6 +51,14 @@ const Login = () => {
         return;
       }
 
+      // Validación de email
+      const emailRegex = /\S+@\S+\.\S+/;
+      if (!emailRegex.test(formData.email)) {
+        setError('Por favor, introduce un email válido.');
+        setLoading(false);
+        return;
+      }
+
       const result = await register(formData.nombre, formData.email, formData.password);
       if (result.success) {
         setError('');

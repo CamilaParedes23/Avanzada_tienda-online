@@ -1,67 +1,49 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { CartProvider } from './context/CartContext';
-import { AuthProvider, useAuth } from './context/AuthContext';
-import Navigation from './components/Navigation';
-import Home from './pages/Home';
-import ProductList from './pages/ProductList';
-import ProductDetail from './pages/ProductDetail';
-import AdminPanel from './pages/AdminPanel';
-import Login from './pages/Login';
-import Cart from './pages/Cart';
-import Footer from './components/Footer';
-import ConfirmacionPedido from "./pages/ConfirmacionPedido";
-import './App.css';
+// src/App.js
+import React from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
-// 🔒 Componente para proteger rutas de admin
-const ProtectedAdminRoute = ({ children }) => {
-    const { user, isAdmin, loading } = useAuth();
+import Navigation from "./components/Navigation";
+import Footer from "./components/Footer";
 
-    if (loading) {
-        return <div className="text-center mt-5">Cargando...</div>;
-    }
+import Home from "./pages/Home";
+import ProductList from "./pages/ProductList";
+import ProductDetail from "./pages/ProductDetail";
+import Cart from "./pages/Cart";
+import Login from "./pages/Login";
+import AdminPanel from "./pages/AdminPanel";
 
-    if (!user || !isAdmin()) {
-        return <Navigate to="/login" replace />;
-    }
+import { AuthProvider } from "./context/AuthContext";
+import { CartProvider } from "./context/CartContext";
 
-    return children;
-};
+// Nuevo componente para gestionar el layout
+const Layout = () => {
+    const location = useLocation();
+    const isAdminPage = location.pathname === '/admin';
 
-function AppContent() {
     return (
-        <div className="App">
+        <div className="App" style={{ display: "flex", minHeight: "100vh", flexDirection: "column" }}>
             <Navigation />
-            <main className="container-fluid py-4">
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/productos" element={<ProductList />} />
-          <Route path="/producto/:id" element={<ProductDetail />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/carrito" element={<Cart />} />
-          <Route path="/confirmacion/:id" element={<ConfirmacionPedido />} />
-
-            <Route
-            path="/admin"
-            element={
-              <ProtectedAdminRoute>
-                <AdminPanel />
-              </ProtectedAdminRoute>
-            }
-          />
-        </Routes>
+            <main style={{ flex: 1, padding: "20px 0" }}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/productos" element={<ProductList />} />
+                    <Route path="/producto/:id" element={<ProductDetail />} />
+                    <Route path="/carrito" element={<Cart />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/admin" element={<AdminPanel />} />
+                </Routes>
             </main>
-            <Footer />
+            {!isAdminPage && <Footer />}
         </div>
     );
-}
+};
 
 function App() {
     return (
         <AuthProvider>
             <CartProvider>
                 <Router>
-                    <AppContent />
+                    <Layout />
                 </Router>
             </CartProvider>
         </AuthProvider>

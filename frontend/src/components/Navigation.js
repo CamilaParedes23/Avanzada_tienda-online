@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/components/Navigation.js
+import React from "react";
 import { Navbar, Nav, Container } from "react-bootstrap";
 import { LinkContainer } from "react-router-bootstrap";
 import { useNavigate } from "react-router-dom";
@@ -18,71 +19,83 @@ function Navigation() {
     };
 
     return (
-        <Navbar bg="light" className="shadow-sm px-4" expand="lg">
+        <Navbar bg="light" expand="lg" className="shadow-sm px-3 navbar-light">
             <Container>
 
-                {/* Logo */}
-                <LinkContainer to="/">
-                    <Navbar.Brand className="fw-bold fs-4">
-                        🛍️ StyleHub
-                    </Navbar.Brand>
-                </LinkContainer>
+                {/* LOGO */}
+                {isAdmin() ? (
+                    <Navbar.Brand className="fw-bold fs-3" style={{pointerEvents: "none"}}>StyleHub</Navbar.Brand>
+                ) : (
+                    <LinkContainer to="/">
+                        <Navbar.Brand className="fw-bold fs-3">StyleHub</Navbar.Brand>
+                    </LinkContainer>
+                )}
 
-                <Navbar.Toggle />
 
-                <Navbar.Collapse className="justify-content-end">
+                <Navbar.Toggle aria-controls="main-navbar" />
+                <Navbar.Collapse id="main-navbar">
 
-                    <Nav className="align-items-center">
+                    {/* ==== MENU IZQUIERDO Y DERECHO COMBINADOS ==== */}
+                    <Nav className="w-100">
 
-                        {/* 🟣 ADMIN NAV — en una sola fila */}
+                        {!isAdmin() && (
+                            <>
+                                {/* Inicio */}
+                                <LinkContainer to="/">
+                                    <Nav.Link>Inicio</Nav.Link>
+                                </LinkContainer>
+
+                                {/* Productos (visible para todos) */}
+                                <LinkContainer to="/productos">
+                                    <Nav.Link>Productos</Nav.Link>
+                                </LinkContainer>
+                            </>
+                        )}
+
+                        {/* ADMIN */}
                         {user && isAdmin() && (
                             <>
-                                <span className="me-3 fw-semibold">👤 Administrador</span>
-
                                 <LinkContainer to="/admin">
                                     <Nav.Link className="me-3">Panel Admin</Nav.Link>
                                 </LinkContainer>
 
                                 <Nav.Link
-                                    className="text-danger fw-semibold"
+                                    className="text-danger fw-semibold ms-auto"
                                     onClick={handleLogout}
                                 >
-                                    🚪 Cerrar Sesión
+                                    Cerrar Sesión
                                 </Nav.Link>
                             </>
                         )}
 
-                        {/* 🟡 USUARIO CLIENTE */}
+                        {/* CLIENTE */}
                         {user && !isAdmin() && (
                             <>
-                                {/* Carrito */}
                                 <LinkContainer to="/carrito">
-                                    <Nav.Link className="me-3">
-                                        🛒 Carrito {itemCount > 0 && `(${itemCount})`}
+                                    <Nav.Link className="ms-auto">
+                                        Carrito {itemCount > 0 && `(${itemCount})`}
                                     </Nav.Link>
                                 </LinkContainer>
-
-                                <span className="me-3 fw-semibold">👤 {user.nombre}</span>
 
                                 <Nav.Link
                                     className="text-danger fw-semibold"
                                     onClick={handleLogout}
                                 >
-                                    🚪 Cerrar Sesión
+                                    Cerrar Sesión
                                 </Nav.Link>
                             </>
                         )}
 
-                        {/* 🟢 Visitante / No logueado */}
+                        {/* VISITANTE */}
                         {!user && (
-                            <LinkContainer to="/login">
+                            <LinkContainer to="/login" className="ms-auto">
                                 <Nav.Link className="btn btn-outline-dark rounded-pill px-3">
-                                    🔐 Iniciar Sesión
+                                    Iniciar Sesión
                                 </Nav.Link>
                             </LinkContainer>
                         )}
-                    </Nav>
 
+                    </Nav>
                 </Navbar.Collapse>
             </Container>
         </Navbar>
