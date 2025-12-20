@@ -245,11 +245,9 @@ h6 { font-size: 1rem; }
     top: 0;
     z-index: 9999;
     background-color: var(--white);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--shadow-light);
+    border-bottom: 2px solid var(--border-color);
+    box-shadow: 0 2px 12px rgba(44,62,80,0.04);
     padding: 0.75rem 1rem;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
     height: 70px;
 }
 
@@ -276,13 +274,16 @@ h6 { font-size: 1rem; }
 
 .navbar-brand {
     font-family: 'Playfair Display', serif;
-    font-weight: 600;
-    font-size: 1.8rem;
-    color: var(--black) !important;
-    letter-spacing: 0.5px;
+    font-weight: 700;
+    font-size: 2rem;
+    color: var(--primary) !important;
+    letter-spacing: 1px;
     transition: var(--transition);
     text-decoration: none !important;
     border-bottom: none !important;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .navbar-brand:hover {
@@ -296,7 +297,7 @@ h6 { font-size: 1rem; }
 }
 
 .nav-link {
-    color: var(--black) !important;
+    color: var(--primary) !important;
     font-weight: 500;
     font-size: 1.1rem;
     padding: 0.5rem 1rem !important;
@@ -304,16 +305,17 @@ h6 { font-size: 1rem; }
     transition: var(--transition);
     text-decoration: none !important;
     border-bottom: none !important;
+    letter-spacing: 0.2px;
 }
 
 .nav-link:hover {
-    color: var(--gold) !important;
-    background-color: rgba(201, 162, 39, 0.1);
+    color: var(--accent) !important;
+    background-color: #f5f6fa;
 }
 
 .nav-link.active {
-    color: var(--gold) !important;
-    background-color: rgba(201, 162, 39, 0.15);
+    color: var(--accent) !important;
+    background-color: #f4a26122;
 }
 
 /* Dropdown de categorías mejorado */
@@ -738,20 +740,69 @@ form button {
 }
 
 .filter-sidebar {
-    background-color: #fafafa;
-    border-radius: 16px;
-    transition: all 0.3s ease-in-out;
+    background: linear-gradient(120deg, #e7f5ff 0%, #f8fafc 100%);
+    border-radius: 18px;
+    border: 1.5px solid #d1edff;
+    box-shadow: 0 4px 18px rgba(33, 150, 243, 0.07);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    padding: 2rem 1.5rem 1.5rem 1.5rem !important;
 }
 
 .filter-sidebar:hover {
-    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 28px rgba(33, 150, 243, 0.10);
+    border-color: #90caf9;
 }
 
 .filter-sidebar h5 {
-    color: #222;
-    font-weight: 600;
+    color: #1976d2;
+    font-weight: 700;
     text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2rem !important;
+}
+/* Inputs y selects de filtros */
+.filter-sidebar input[type="text"],
+.filter-sidebar select {
+    border-radius: 8px;
+    border: 1.5px solid #b3c6e0;
+    background: #fafdff;
+    font-size: 1rem;
+    padding: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+    transition: border 0.2s;
+}
+.filter-sidebar input[type="text"]:focus,
+.filter-sidebar select:focus {
+    border-color: #1976d2;
+    outline: none;
+}
+
+.filter-sidebar label,
+.filter-sidebar .form-label {
+    font-weight: 500;
+    color: #22304a;
+    margin-bottom: 0.3rem;
+}
+
+.filter-sidebar .btn,
+.filter-sidebar button {
+    background: linear-gradient(135deg, #1976d2 0%, #90caf9 100%);
+    color: #fff;
+    font-weight: 700;
+    border: none;
+    border-radius: 24px;
+    padding: 0.7rem 1.5rem;
+    font-size: 1.1rem;
     letter-spacing: 0.5px;
+    box-shadow: 0 2px 8px rgba(33, 150, 243, 0.10);
+    margin-top: 0.5rem;
+    transition: background 0.2s, box-shadow 0.2s;
+}
+.filter-sidebar .btn:hover,
+.filter-sidebar button:hover {
+    background: linear-gradient(135deg, #1565c0 0%, #64b5f6 100%);
+    color: #fff;
+    box-shadow: 0 4px 16px rgba(33, 150, 243, 0.13);
 }
 
 /* ===== PRODUCT CARD GRID ===== */
@@ -1023,7 +1074,7 @@ form button {
 
 /* HERO SECTION PREMIUM */
 .hero-section {
-    background: linear-gradient(135deg,var(--gold-dark) 5%, var(--white) 90%);
+    background: linear-gradient(120deg, #d1edff 0%, #e7f5ff 100%);
     border-radius: var(--border-radius-lg);
     box-shadow: var(--shadow-medium);
     transition: var(--transition);
@@ -1045,7 +1096,7 @@ form button {
     left: 0;
     right: 0;
     bottom: 0;
-    background: linear-gradient(45deg, transparent 0%, rgba(201, 162, 39, 0.05) 50%, transparent 100%);
+    background: linear-gradient(60deg, transparent 0%, rgba(33, 150, 243, 0.08) 50%, transparent 100%);
     pointer-events: none;
 }
 

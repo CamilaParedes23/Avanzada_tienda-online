@@ -23,13 +23,13 @@ function Navigation() {
             <Container>
 
                 {/* LOGO */}
-                {isAdmin() ? (
-                    <Navbar.Brand className="fw-bold fs-3" style={{pointerEvents: "none"}}>StyleHub</Navbar.Brand>
-                ) : (
-                    <LinkContainer to="/">
-                        <Navbar.Brand className="fw-bold fs-3">StyleHub</Navbar.Brand>
-                    </LinkContainer>
-                )}
+                <LinkContainer to="/">
+                    <Navbar.Brand className="fw-bold fs-3 d-flex align-items-center" style={{gap: 8, letterSpacing: 1, fontFamily: 'Playfair Display, serif', color: 'var(--primary)', fontWeight: 700}}>
+                        <span style={{fontSize: 28, marginRight: 4, color: 'var(--accent)'}} aria-label="camiseta" role="img">👕</span>
+                        StyleHub
+                        <span style={{fontSize: 13, color: 'var(--gray)', fontWeight: 400, marginLeft: 8, fontFamily: 'Poppins, sans-serif'}}>Tu estilo, tu tienda</span>
+                    </Navbar.Brand>
+                </LinkContainer>
 
 
                 <Navbar.Toggle aria-controls="main-navbar" />
