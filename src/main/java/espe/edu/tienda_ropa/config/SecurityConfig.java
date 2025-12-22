@@ -28,12 +28,17 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(csrf -> csrf.disable())
+                .headers(headers -> headers.frameOptions().disable()) // Para H2 Console
                 .authorizeHttpRequests(auth -> auth
                         // 🔓 Rutas públicas
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/util/**").permitAll()
                         .requestMatchers("/api/productos/**").permitAll()
                         .requestMatchers("/api/categorias/**").permitAll()
+                        .requestMatchers("/api/test/**").permitAll()
+
+                        // 🔓 H2 Console para desarrollo
+                        .requestMatchers("/h2-console/**").permitAll()
 
                         // 🔓 AGREGADO: permitir crear pedidos
                         .requestMatchers("/api/v2/pedidos/**").permitAll()
