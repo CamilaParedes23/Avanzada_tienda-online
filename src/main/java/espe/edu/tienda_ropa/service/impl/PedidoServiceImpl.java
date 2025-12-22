@@ -163,7 +163,7 @@ public class PedidoServiceImpl implements PedidoService {
         pedido.setEstado(Pedido.EstadoPedido.COMPLETADO);
         Pedido pedidoGuardado = repo.save(pedido);
 
-        // 🔥 DISPARAR FLUJO REACTIVO REAL
+        // DISPARAR FLUJO REACTIVO REAL
         reactiveOrderService.procesarPedidoReal(pedidoGuardado);
 
         return toResponse(pedidoGuardado);
