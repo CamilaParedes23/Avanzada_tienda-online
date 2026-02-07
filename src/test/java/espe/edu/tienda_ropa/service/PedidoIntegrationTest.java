@@ -1,14 +1,17 @@
 package espe.edu.tienda_ropa.service;
 
+import espe.edu.tienda_ropa.domain.Categoria;
 import espe.edu.tienda_ropa.domain.Producto;
 import espe.edu.tienda_ropa.dto.DetallePedidoRequestData;
 import espe.edu.tienda_ropa.dto.PedidoRequestData;
 import espe.edu.tienda_ropa.dto.PedidoResponse;
+import espe.edu.tienda_ropa.repository.CategoriaDomainRepository;
 import espe.edu.tienda_ropa.repository.PedidoDomainRepository;
 import espe.edu.tienda_ropa.repository.ProductoDomainRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -16,6 +19,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class PedidoIntegrationTest {
 
     @Autowired
@@ -25,13 +29,19 @@ public class PedidoIntegrationTest {
     private PedidoDomainRepository pedidoRepo;
 
     @Autowired
-    private ClienteDomainRepository clienteRepo;
+    private CategoriaDomainRepository categoriaRepo;
 
     @Autowired
     private PedidoService pedidoService;
 
     @Test
     public void crearYConfirmarPedido_debeCambiarEstadoYReducirStock() {
+        // Crear categoría de prueba
+        Categoria categoria = new Categoria();
+        categoria.setNombre("Categoria Test");
+        categoria.setDescripcion("Descripcion de prueba");
+        Categoria savedCategoria = categoriaRepo.save(categoria);
+
         // Crear producto de prueba
         Producto p = new Producto();
         p.setNombre("Prueba");
@@ -40,25 +50,17 @@ public class PedidoIntegrationTest {
         p.setTalla("M");
         p.setColor("Negro");
         p.setStock(10);
+        p.setCategoria(savedCategoria);
         Producto saved = productoRepo.save(p);
 
-        // Crear cliente de prueba
-        Cliente c = new Cliente();
-        c.setNombre("Test");
-        c.setApellido("User");
-        c.setCorreo("test@example.com");
-        c.setTelefono("0999999999");
-        // agrega cualquier otro campo @NotNull
-        Cliente savedCliente = clienteRepo.save(c);
-
-        // Preparar pedido con detalle
+        // Preparar pedido con detalle (usando clienteId fijo para test)
         DetallePedidoRequestData detalle = new DetallePedidoRequestData();
         detalle.setProductoId(saved.getId());
         detalle.setCantidad(2);
         detalle.setPrecioUnitario(saved.getPrecio());
 
         PedidoRequestData pedidoReq = new PedidoRequestData();
-        pedidoReq.setClienteId(savedCliente.getId());
+        pedidoReq.setClienteId(1L);
         pedidoReq.setTotal(new BigDecimal("22.00"));
         pedidoReq.setDireccionEnvio("Calle Test 123");
         pedidoReq.setObservaciones("");
@@ -71,7 +73,8 @@ public class PedidoIntegrationTest {
         // Confirmar pedido
         PedidoResponse confirmado = pedidoService.confirm(creado.getId());
         assertNotNull(confirmado, "Respuesta de confirmación no debe ser nula");
-        assertEquals(espe.edu.tienda_ropa.domain.Pedido.EstadoPedido.CONFIRMADO, confirmado.getEstado(), "Estado debe ser CONFIRMADO");
+        assertEquals(espe.edu.tienda_ropa.domain.Pedido.EstadoPedido.CONFIRMADO, confirmado.getEstado(),
+                "Estado debe ser CONFIRMADO");
 
         // Verificar en BD
         var opt = pedidoRepo.findById(creado.getId());
