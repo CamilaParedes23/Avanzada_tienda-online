@@ -2,6 +2,22 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 
+// --- FUNCIONES HELPER FUERA DEL COMPONENTE ---
+const getCurrentUser = () => {
+    const user = localStorage.getItem('user');
+    return user ? JSON.parse(user) : null;
+};
+
+const getCurrentUserId = () => {
+    const u = getCurrentUser();
+    return u?.userId || u?.clienteId || 'guest';
+};
+
+const userIsAdmin = () => {
+    const u = getCurrentUser();
+    return u?.roles?.includes("ROLE_ADMIN");
+};
+
 export const useCart = () => {
     const context = useContext(CartContext);
     if (!context) {
@@ -12,26 +28,9 @@ export const useCart = () => {
 
 export const CartProvider = ({ children }) => {
 
-    // --- 1) FUNCIÓN PARA SABER QUIÉN ES EL USUARIO ---
-    const getCurrentUser = () => {
-        const user = localStorage.getItem('user');
-        return user ? JSON.parse(user) : null;
-    };
-
-    const getCurrentUserId = () => {
-        const u = getCurrentUser();
-        return u?.userId || u?.clienteId || 'guest';
-    };
-
-    // --- 2) DETECTAR SI ES ADMIN ---
-    const userIsAdmin = () => {
-        const u = getCurrentUser();
-        return u?.roles?.includes("ROLE_ADMIN");
-    };
-
     const [currentUserId, setCurrentUserId] = useState(getCurrentUserId());
 
-    // --- 3) CARGAR CARRITO SOLO SI NO ES ADMIN ---
+    // --- CARGAR CARRITO SOLO SI NO ES ADMIN ---
     const [items, setItems] = useState(() => {
         if (userIsAdmin()) return []; // Admin no tiene carrito
 
@@ -40,7 +39,7 @@ export const CartProvider = ({ children }) => {
         return savedCart ? JSON.parse(savedCart) : [];
     });
 
-    // --- 4) DETECTAR CUANDO EL USUARIO CAMBIA Y RECARGAR SU CARRITO ---
+    // --- DETECTAR CUANDO EL USUARIO CAMBIA Y RECARGAR SU CARRITO ---
     useEffect(() => {
         const checkUserChange = () => {
             const newUserId = getCurrentUserId();
@@ -64,7 +63,7 @@ export const CartProvider = ({ children }) => {
         return () => clearInterval(interval);
     }, [currentUserId]);
 
-    // --- 5) GUARDAR CARRITO SOLO SI NO ES ADMIN ---
+    // --- GUARDAR CARRITO SOLO SI NO ES ADMIN ---
     useEffect(() => {
         if (userIsAdmin()) return;
 
