@@ -2,9 +2,9 @@ name: CI - Integración Continua
 
 on:
   push:
-    branches: [main]
+    branches: [main, feature/ci-cd-workflows]
   pull_request:
-    branches: [main]
+    branches: [main, feature/ci-cd-workflows]
 
 jobs:
   build-backend:
@@ -27,6 +27,10 @@ jobs:
 
       - name: Ejecutar tests del backend
         run: ./gradlew test
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_USERNAME: ${{ secrets.DATABASE_USERNAME }}
+          DATABASE_PASSWORD: ${{ secrets.DATABASE_PASSWORD }}
 
       - name: Construir backend
         run: ./gradlew build

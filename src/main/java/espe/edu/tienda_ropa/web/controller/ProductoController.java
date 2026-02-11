@@ -20,27 +20,28 @@ public class ProductoController {
         this.productoService = productoService;
     }
 
-    @PostMapping
+    @PostMapping(produces = "application/json;charset=UTF-8")
     public ResponseEntity<ProductoResponse> create(@Valid @RequestBody ProductoRequestData request) {
         return ResponseEntity.status(HttpStatus.CREATED).body(productoService.create(request));
     }
 
-    @GetMapping("/{id}")
+    @GetMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
     public ResponseEntity<ProductoResponse> getById(@PathVariable Long id) {
         return ResponseEntity.ok(productoService.getById(id));
     }
 
-    @GetMapping
+    @GetMapping(produces = "application/json;charset=UTF-8")
     public ResponseEntity<List<ProductoResponse>> getAll() {
         return ResponseEntity.ok(productoService.list());
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<ProductoResponse> update(@PathVariable Long id, @Valid @RequestBody ProductoRequestData request) {
+    @PutMapping(value = "/{id}", produces = "application/json;charset=UTF-8")
+    public ResponseEntity<ProductoResponse> update(@PathVariable Long id,
+            @Valid @RequestBody ProductoRequestData request) {
         return ResponseEntity.ok(productoService.update(id, request));
     }
 
-    @PatchMapping("/{id}/deactivate")
+    @PatchMapping(value = "/{id}/deactivate", produces = "application/json;charset=UTF-8")
     public ResponseEntity<ProductoResponse> deactivate(@PathVariable Long id) {
         return ResponseEntity.ok(productoService.deactivate(id));
     }
