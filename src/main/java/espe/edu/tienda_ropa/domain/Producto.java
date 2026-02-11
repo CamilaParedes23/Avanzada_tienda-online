@@ -33,14 +33,18 @@ public class Producto {
     @Column(nullable = false)
     private Integer stock = 0;
 
+    @Column(name = "imagen_url")
     private String imagenUrl;
 
+    @Column(nullable = false)
+    private Boolean activo = true;
 
     // Constructores
-    public Producto() {}
+    public Producto() {
+    }
 
     public Producto(String nombre, String descripcion, BigDecimal precio,
-                   Categoria categoria, String talla, String color, Integer stock) {
+            Categoria categoria, String talla, String color, Integer stock) {
         this.nombre = nombre;
         this.descripcion = descripcion;
         this.precio = precio;
@@ -121,5 +125,13 @@ public class Producto {
 
     public void setImagenUrl(String imagenUrl) {
         this.imagenUrl = imagenUrl;
+    }
+
+    public Boolean getActivo() {
+        return activo;
+    }
+
+    public void setActivo(Boolean activo) {
+        this.activo = activo;
     }
 }
