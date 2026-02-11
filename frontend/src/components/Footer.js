@@ -3,6 +3,7 @@ import { Container, Row, Col } from "react-bootstrap";
 
 function Footer() {
     const [visitCount, setVisitCount] = useState(0);
+    const [currentDateTime, setCurrentDateTime] = useState(new Date());
 
     useEffect(() => {
         // Simular contador de visitas
@@ -10,7 +11,26 @@ function Footer() {
         const currentCount = storedCount ? parseInt(storedCount) + 1 : Math.floor(Math.random() * 1000) + 100;
         setVisitCount(currentCount);
         localStorage.setItem('visitCount', currentCount.toString());
+
+        // Actualizar fecha y hora cada segundo
+        const timer = setInterval(() => {
+            setCurrentDateTime(new Date());
+        }, 1000);
+
+        return () => clearInterval(timer);
     }, []);
+
+    const formatDateTime = (date) => {
+        return date.toLocaleString('es-EC', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit'
+        });
+    };
 
     return (
         <footer className="footer mt-5">
@@ -63,6 +83,22 @@ function Footer() {
                             <div className="counter-content">
                                 <span className="counter-label">Visitante #</span>
                                 <span className="counter-number">{visitCount.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </Col>
+
+                    {/* FECHA Y HORA DINÁMICA */}
+                    <Col lg={4} className="mb-4">
+                        <center><h5>Fecha y Hora</h5></center>
+                        <div className="datetime-container">
+                            <div className="datetime-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <polyline points="12 6 12 12 16 14"></polyline>
+                                </svg>
+                            </div>
+                            <div className="datetime-content">
+                                <span className="datetime-text">{formatDateTime(currentDateTime)}</span>
                             </div>
                         </div>
                     </Col>

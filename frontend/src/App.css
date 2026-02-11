@@ -757,6 +757,66 @@ p {
     }
 }
 
+/* Fecha y hora dinámica */
+.datetime-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--radius);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: var(--transition);
+}
+
+.datetime-container:hover {
+    background: rgba(255, 255, 255, 0.08);
+    transform: translateY(-2px);
+}
+
+.datetime-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 50%;
+    color: white;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    animation: pulse 2s infinite;
+}
+
+.datetime-icon svg {
+    width: 20px;
+    height: 20px;
+}
+
+.datetime-content {
+    display: flex;
+    align-items: center;
+    flex: 1;
+}
+
+.datetime-text {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.025em;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+    }
+    50% {
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.4);
+    }
+}
+
 /* ===== UTILIDADES ===== */
 .text-primary {
     color: var(--primary) !important;
