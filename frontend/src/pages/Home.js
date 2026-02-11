@@ -90,7 +90,7 @@ function Home() {
       {/* PRODUCTOS DESTACADOS */}
       <section className="featured-section">
         <div className="text-center mb-3">
-          <h2 className="fw-bold mb-1">Productos Destacados</h2>
+          <h2 className="fw-bold mb-1">Productos Destacados...</h2>
           <p className="text-muted small">
             Los más populares de nuestra tienda
           </p>
@@ -99,7 +99,7 @@ function Home() {
         {loading ? (
           <div className="text-center py-4">
             <div className="spinner-border text-secondary" role="status">
-              <span className="visually-hidden">Cargando...</span>
+              <span className="visually-hidden">Cargando.....</span>
             </div>
           </div>
         ) : productosDestacados.length > 0 ? (
@@ -112,7 +112,7 @@ function Home() {
           </div>
         ) : (
           <div className="text-center py-4">
-            <p className="text-muted">No hay productos disponibles</p>
+            <p className="text-muted">No hay productos que mostrar.</p>
             <Link to="/admin">
               <Button variant="outline-primary" size="sm">
                 Administrar Productos
