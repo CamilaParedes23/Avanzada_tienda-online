@@ -34,6 +34,9 @@ function Footer() {
 
                 <div className="copyright">
                     © {new Date().getFullYear()} Tienda de Ropa — Todos los derechos reservados.
+                    <div className="mt-2">
+                        <em className="text-muted small">Tu estilo, tu pasión</em>
+                    </div>
                 </div>
 
             </Container>
