@@ -1,7 +1,17 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 
 function Footer() {
+    const [visitCount, setVisitCount] = useState(0);
+
+    useEffect(() => {
+        // Simular contador de visitas
+        const storedCount = localStorage.getItem('visitCount');
+        const currentCount = storedCount ? parseInt(storedCount) + 1 : Math.floor(Math.random() * 1000) + 100;
+        setVisitCount(currentCount);
+        localStorage.setItem('visitCount', currentCount.toString());
+    }, []);
+
     return (
         <footer className="footer mt-5">
             <Container>
@@ -40,6 +50,22 @@ function Footer() {
                         </div>
                     </Col>
 
+                    {/* CONTADOR DE VISITAS */}
+                    <Col lg={4} className="mb-4">
+                        <center><h5>Estadísticas</h5></center>
+                        <div className="visit-counter">
+                            <div className="counter-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                    <path d="M1 12s4-8 11-8 11 8-11 8 11-8 11-8-11-8-11 8z"></path>
+                                    <circle cx="12" cy="12" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div className="counter-content">
+                                <span className="counter-label">Visitante #</span>
+                                <span className="counter-number">{visitCount.toLocaleString()}</span>
+                            </div>
+                        </div>
+                    </Col>
 
                 </Row>
 
