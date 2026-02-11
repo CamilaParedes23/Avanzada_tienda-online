@@ -1,8 +1,7 @@
 import axios from "axios";
 
-// Usa variable de entorno en producción, localhost en desarrollo
-const API_BASE_URL =
-  process.env.REACT_APP_API_URL || "http://localhost:8080/api";
+// Backend desplegado en Render
+const API_BASE_URL = "https://avanzada-tienda-online.onrender.com/api";
 
 const api = axios.create({
   baseURL: API_BASE_URL,
