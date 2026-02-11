@@ -90,7 +90,7 @@ function Home() {
       {/* PRODUCTOS DESTACADOS */}
       <section className="featured-section">
         <div className="text-center mb-3">
-          <h2 className="fw-bold mb-1">Productos Destacados.</h2>
+          <h2 className="fw-bold mb-1">Productos Destacados...</h2>
           <p className="text-muted small">
             Los más populares de nuestra tienda
           </p>
