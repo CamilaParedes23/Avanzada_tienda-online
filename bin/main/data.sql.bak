@@ -1,0 +1,13 @@
+-- Insertar categorías de prueba
+INSERT INTO categorias (nombre, descripcion) VALUES
+('Camisas', 'Camisas casuales y formales'),
+('Pantalones', 'Pantalones de vestir y casuales'),
+('Chaquetas', 'Chaquetas y abrigos'),
+('Zapatos', 'Calzado para toda ocasión');
+
+-- Insertar productos de prueba
+INSERT INTO productos (nombre, descripcion, precio, stock, categoria_id, talla, color) VALUES
+('Camisa Blanca Clásica', 'Camisa blanca de algodón para oficina', 45.99, 25, 1, 'M', 'Blanco'),
+('Pantalón Negro Formal', 'Pantalón de vestir negro', 89.99, 15, 2, 'L', 'Negro'),
+('Chaqueta de Cuero', 'Chaqueta de cuero genuino', 199.99, 8, 3, 'XL', 'Marrón'),
+('Zapatos Oxford', 'Zapatos de cuero marrón', 129.99, 12, 4, '42', 'Marrón');
