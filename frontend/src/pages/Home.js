@@ -112,7 +112,7 @@ function Home() {
           </div>
         ) : (
           <div className="text-center py-4">
-            <p className="text-muted">No hay productos que mostrar</p>
+            <p className="text-muted">No hay productos que mostrar.</p>
             <Link to="/admin">
               <Button variant="outline-primary" size="sm">
                 Administrar Productos
