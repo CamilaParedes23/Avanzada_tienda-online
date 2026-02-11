@@ -19,10 +19,10 @@ public class DataLoader implements CommandLineRunner {
     private final ProductoDomainRepository productoRepo;
 
     public DataLoader(UsuarioRepository usuarioRepo,
-                      RolRepository rolRepo,
-                      PasswordEncoder passwordEncoder,
-                      CategoriaDomainRepository categoriaRepo,
-                      ProductoDomainRepository productoRepo) {
+            RolRepository rolRepo,
+            PasswordEncoder passwordEncoder,
+            CategoriaDomainRepository categoriaRepo,
+            ProductoDomainRepository productoRepo) {
         this.usuarioRepo = usuarioRepo;
         this.rolRepo = rolRepo;
         this.passwordEncoder = passwordEncoder;
@@ -38,11 +38,11 @@ public class DataLoader implements CommandLineRunner {
         // Crear roles si no existen
         // ============================
         System.out.println("📋 Creando roles...");
-        Rol rolCliente = rolRepo.findByNombre("CLIENTE")
-                .orElseGet(() -> rolRepo.save(new Rol("CLIENTE")));
+        Rol rolCliente = rolRepo.findByNombre("ROLE_USER")
+                .orElseGet(() -> rolRepo.save(new Rol("ROLE_USER")));
 
-        Rol rolAdmin = rolRepo.findByNombre("ADMIN")
-                .orElseGet(() -> rolRepo.save(new Rol("ADMIN")));
+        Rol rolAdmin = rolRepo.findByNombre("ROLE_ADMIN")
+                .orElseGet(() -> rolRepo.save(new Rol("ROLE_ADMIN")));
 
         // ============================
         // Usuario CLIENTE
@@ -116,6 +116,9 @@ public class DataLoader implements CommandLineRunner {
             camisa1.setCategoria(camisas);
             camisa1.setTalla("M");
             camisa1.setColor("Blanco");
+            camisa1.setImagenUrl(
+                    "https://png.pngtree.com/png-vector/20240628/ourmid/pngtree-white-shirt-isolated-on-transparent-background-png-image_12893964.png");
+            camisa1.setActivo(true);
             productoRepo.save(camisa1);
 
             // Pantalón Negro
@@ -127,6 +130,9 @@ public class DataLoader implements CommandLineRunner {
             pantalon1.setCategoria(pantalones);
             pantalon1.setTalla("L");
             pantalon1.setColor("Negro");
+            pantalon1.setImagenUrl(
+                    "https://png.pngtree.com/png-clipart/20220711/ourmid/pngtree-black-jeans-pants-png-image_5941418.png");
+            pantalon1.setActivo(true);
             productoRepo.save(pantalon1);
 
             // Chaqueta de Cuero
@@ -138,6 +144,8 @@ public class DataLoader implements CommandLineRunner {
             chaqueta1.setCategoria(chaquetas);
             chaqueta1.setTalla("XL");
             chaqueta1.setColor("Marrón");
+            chaqueta1.setImagenUrl("https://w7.pngwing.com/pngs/721/19/png-transparent-leather-jacket.png");
+            chaqueta1.setActivo(true);
             productoRepo.save(chaqueta1);
 
             System.out.println("✔ Productos de prueba creados");

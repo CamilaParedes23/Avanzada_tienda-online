@@ -15,7 +15,7 @@ const getCurrentUserId = () => {
 
 const userIsAdmin = () => {
   const u = getCurrentUser();
-  return u?.roles?.includes("ROLE_ADMIN");
+  return u?.roles?.includes("ROLE_ADMIN") || u?.roles?.includes("ADMIN");
 };
 
 export const useCart = () => {
