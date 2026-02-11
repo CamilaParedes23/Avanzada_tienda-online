@@ -644,6 +644,52 @@ p {
     font-size: 0.8125rem;
 }
 
+/* Iconos animados para el footer */
+.contact-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: #9ca3af;
+    flex-shrink: 0;
+    transition: var(--transition);
+    overflow: hidden;
+    position: relative;
+}
+
+.contact-icon::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent, rgba(37, 99, 235, 0.1), transparent);
+    border-radius: 50%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.contact-item:hover .contact-icon {
+    background: var(--accent);
+    color: white;
+    transform: translateY(-2px) scale(1.05);
+}
+
+.contact-item:hover .contact-icon::before {
+    opacity: 1;
+}
+
+.contact-icon svg {
+    width: 16px;
+    height: 16px;
+    z-index: 1;
+    position: relative;
+}
+
 /* ===== UTILIDADES ===== */
 .text-primary {
     color: var(--primary) !important;
